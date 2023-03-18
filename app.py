@@ -42,12 +42,14 @@ class Employee_record(db.Model):
 class EntranceHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     employee_name = db.Column(db.String(100), unique=True, nullable=False)
-    date_time = db.Column(db.DateTime, default=datetime.now(pytz.timezone("Etc/GMT-1")))
+    entrance_date = db.Column(db.DateTime, default=datetime.now(pytz.timezone("Etc/GMT-1")).strftime("%d-%m-%Y"))
+    entrance_time = db.Column(db.Datetime, default=datetime.now(pytz.timezone("Etc/GMT-1")).strftime("%H:%M:%S"))
     employee_link = db.Column(db.String(100), db.ForeignKey('employee_record'), nullable=False)
     
-    def __init__(self, employee_name, date_time):
+    def __init__(self, employee_name, entrance_date, entrance_time):
         self.employee_name = employee_name
-        self.date_time = date_time
+        self.entrance_date = entrance_date
+        self.entrance_time = entrance_time
           
 
 class_names = []
