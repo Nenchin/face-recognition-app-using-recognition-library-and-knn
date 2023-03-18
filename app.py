@@ -17,7 +17,6 @@ import pytz
 from face_recognition_knn import train, predict, show_prediction_labels_on_image
 
 
-
 app = Flask(__name__)
 CORS(app)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -32,26 +31,24 @@ class Employee_record(db.Model):
     employee_name = db.Column(db.String(100), unique=True, nullable=False)
     employee_role = db.Column(db.String(100),nullable=False)
     employee_unit = db.Column(db.String(100),nullable=False)
+    entrancehistorys = db.relationship('Entrancehistory', backref='employee', lazy=True)
 
-    
     def __init__(self, employee_name, employee_role, employee_unit):
         self.employee_name = employee_name
         self.employee_role = employee_role
         self.employee_unit = employee_unit
         
    
-   
 class EntranceHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     employee_name = db.Column(db.String(100), unique=True, nullable=False)
     date_time = db.Column(db.DateTime, default=datetime.now(pytz.timezone("Etc/GMT-1")))
-
+    employee_link = db.Column(db.String(100), db.ForeignKey('employee_record'), nullable=False)
     
     def __init__(self, employee_name, date_time):
         self.employee_name = employee_name
         self.date_time = date_time
-       
-    
+          
 
 class_names = []
 for folder in datasets:
